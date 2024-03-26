@@ -13,9 +13,25 @@
     <main>
       <aside>
         <div>
-          <form action="">
-            <input type="text" />
-            <button type="submit">Search</button>
+          <form id="searchForm">
+            <label for="searchType">Search Type:</label> <br />
+            <input
+              type="text"
+              name="searchQuery"
+              id="searchQuery"
+              placeholder="Artist Name"
+            />
+            <br />
+            <select name="searchType" id="searchType">
+              <option value="artist">Artist</option>
+              <option value="playlist">Playlist</option>
+              <option value="track">Track</option>
+              <option value="show">Show</option>
+              <option value="album">Album</option>
+              <option value="audiobook">Audiobook</option>
+            </select>
+            <br />
+            <button type="submit">Submit</button>
           </form>
         </div>
         <div>
@@ -34,6 +50,7 @@
       </section>
     </main>
     <footer>&copy; 2024 All rights reserved</footer>
+    <script type="text/javascript" src="jquery-3.5.1.min.js"></script>
     <script src="./script.js"></script>
   </body>
 </html>

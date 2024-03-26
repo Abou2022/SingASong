@@ -19,3 +19,28 @@ header {
   text-align: center;
   padding-top: 50px;
 }
+
+main {
+  display: flex;
+  flex: 1;
+}
+
+aside {
+  width: 20%;
+  background-color: #e0e0e0;
+  padding: 20px;
+}
+
+section {
+  width: 70%;
+  background-color: #fff;
+  padding: 20px;
+}
+
+footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  margin-top: auto;
+}
