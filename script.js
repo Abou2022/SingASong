@@ -55,6 +55,11 @@ $(document).ready(function () {
             .attr("alt", item.name)
             .addClass("artist-image");
           itemLi.append(itemName, itemGenres, itemPopularity, itemImage);
+        } else if (searchType === "playlist") {
+          const itemLink = $("<a>")
+            .attr("href", item.external_urls.spotify)
+            .text("Open Playlist");
+          itemLi.append(itemName, itemLink);
         }
         itemList.append(itemLi);
       });
