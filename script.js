@@ -2,12 +2,21 @@ require("dotenv").config();
 
 $(document).ready(function () {
   var searchFormEl = $("#searchForm");
+  var asideSection = $("aside");
 
   async function handleFormSubmit(event) {
     event.preventDefault();
 
     var searchQuery = $("#searchQuery").val();
     var searchType = $("#searchType").val();
+    if (!searchQuery) {
+      console.log("No text entered");
+      return;
+    }
+    if (!searchType) {
+      console.log("No choice");
+      return;
+    }
 
     const my_token = await get_spotify_api_token(client_id, client_secret);
 
@@ -27,7 +36,7 @@ $(document).ready(function () {
     }
   }
 
-  searchFormEl.on("submit", handleFormSubmit);
+  $("#searchForm").on("submit", handleFormSubmit);
 
   function displayData(data, searchType) {
     if (
