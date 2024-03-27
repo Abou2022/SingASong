@@ -7,7 +7,7 @@ $(document).ready(function () {
     var searchQuery = $("#searchQuery").val();
     var searchType = $("#searchType").val();
 
-    const my_token = "";
+    const my_token = await get_spotify_api_token("", "");
 
     const url = `https://api.spotify.com/v1/search?q=${searchQuery}&type=${searchType}&limit=5`;
 
@@ -68,6 +68,9 @@ $(document).ready(function () {
       asideSection.text(`No ${searchType}s found.`);
     }
   }
+
+  const client_id = process.env.CLIENT_ID;
+  const client_secret = process.env.CLIENT_SECRET;
 
   async function get_spotify_api_token(client_id, client_secret) {
     try {
