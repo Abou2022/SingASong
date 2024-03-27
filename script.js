@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 $(document).ready(function () {
   var searchFormEl = $("#searchForm");
 
@@ -7,7 +9,7 @@ $(document).ready(function () {
     var searchQuery = $("#searchQuery").val();
     var searchType = $("#searchType").val();
 
-    const my_token = await get_spotify_api_token("", "");
+    const my_token = await get_spotify_api_token(client_id, client_secret);
 
     const url = `https://api.spotify.com/v1/search?q=${searchQuery}&type=${searchType}&limit=5`;
 
