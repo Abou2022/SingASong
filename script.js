@@ -45,7 +45,16 @@ $(document).ready(function () {
           const itemPopularity = $("<p>").text(
             "Popularity: " + item.popularity
           );
-          itemLi.append(itemName, itemGenres, itemPopularity);
+          const itemImage = $("<img>")
+            .attr(
+              "src",
+              item.images.length > 0
+                ? item.images[0].url
+                : "default-image-url.jpg"
+            )
+            .attr("alt", item.name)
+            .addClass("artist-image");
+          itemLi.append(itemName, itemGenres, itemPopularity, itemImage);
         }
         itemList.append(itemLi);
       });
