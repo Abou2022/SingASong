@@ -26,4 +26,29 @@ $(document).ready(function () {
   }
 
   searchFormEl.on("submit", handleFormSubmit);
+
+  function displayData(data, searchType) {
+    if (
+      data &&
+      data[searchType + "s"] &&
+      data[searchType + "s"].items.length > 0
+    ) {
+      const items = data[searchType + "s"].items;
+      const itemList = $("<ul>");
+
+      items.forEach((item) => {
+        const itemLi = $("<li>");
+        const itemName = $("<h4>").text(item.name);
+
+        if (searchType === "artist") {
+          const itemGenres = $("<p>").text("Genres: " + item.genres.join(", "));
+          const itemPopularity = $("<p>").text(
+            "Popularity: " + item.popularity
+          );
+          itemLi.append(itemName, itemGenres, itemPopularity);
+        }
+        itemList.append(itemLi);
+      });
+    }
+  }
 });
