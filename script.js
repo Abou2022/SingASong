@@ -58,6 +58,31 @@ $(document).ready(function () {
         }
         itemList.append(itemLi);
       });
+      asideSection.append(itemList);
+    } else {
+      asideSection.text(`No ${searchType}s found.`);
+    }
+  }
+
+  async function get_spotify_api_token(client_id, client_secret) {
+    try {
+      const response = await fetch("https://accounts.spotify.com/api/token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization: "Basic " + btoa(client_id + ":" + client_secret),
+        },
+        body: "grant_type=client_credentials",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to retrieve access token");
+      }
+
+      const data = await response.json();
+      return data.access_token;
+    } catch (error) {
+      console.error("Error retrieving access token:", error);
+      return null;
     }
   }
 });
