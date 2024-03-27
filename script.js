@@ -1,5 +1,7 @@
 $(document).ready(function () {
-  function handleFormSubmit(event) {
+  var searchFormEl = $("#searchForm");
+
+  async function handleFormSubmit(event) {
     event.preventDefault();
 
     var searchQuery = $("#searchQuery").val();
@@ -11,16 +13,18 @@ $(document).ready(function () {
     const url = `https://api.spotify.com/v1/search?q=${searchQuery}&type=${searchType}&limit=5`;
 
     try {
-      const response = fetch(url, {
+      const response = await fetch(url, {
         headers: {
           Authorization: `Bearer ${my_token}`,
         },
       });
 
-      const data = response.json();
+      const data = await response.json();
       displayData(data, searchType);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   }
+
+  searchFormEl.on("submit", handleFormSubmit);
 });
