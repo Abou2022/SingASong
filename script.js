@@ -1,4 +1,5 @@
-require("dotenv").config();
+// import config from "./config";
+import config from "./config.js";
 
 $(document).ready(function () {
   var searchFormEl = $("#searchForm");
@@ -18,7 +19,7 @@ $(document).ready(function () {
       return;
     }
 
-    const my_token = await get_spotify_api_token(client_id, client_secret);
+    const my_token = await get_spotify_api_token(clientId, clientSecret);
 
     const url = `https://api.spotify.com/v1/search?q=${searchQuery}&type=${searchType}&limit=5`;
 
@@ -39,6 +40,9 @@ $(document).ready(function () {
   $("#searchForm").on("submit", handleFormSubmit);
 
   function displayData(data, searchType) {
+    const itemList = asideSection.find("ul");
+    itemList.empty();
+
     if (
       data &&
       data[searchType + "s"] &&
@@ -80,8 +84,8 @@ $(document).ready(function () {
     }
   }
 
-  const client_id = process.env.CLIENT_ID;
-  const client_secret = process.env.CLIENT_SECRET;
+  const clientId = config.clientId;
+  const clientSecret = config.clientSecret;
 
   async function get_spotify_api_token(client_id, client_secret) {
     try {
