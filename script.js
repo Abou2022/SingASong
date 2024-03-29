@@ -122,7 +122,13 @@ $(document).ready(function () {
       });
       asideSection.append(itemList);
     } else {
-      asideSection.text(`No ${searchType}s found.`);
+      let errorMessage;
+      if (data.error && data.error.status === 401) {
+        errorMessage = "Please try other artists, personne.";
+      } else {
+        errorMessage = "Research infructuse.";
+      }
+      asideSection.text(errorMessage);
     }
   }
 
@@ -142,6 +148,12 @@ $(document).ready(function () {
       if (!response.ok) {
         throw new Error("Failed to retrieve access token");
       }
+
+      asideSection.on("click", ".description-link", function (event) {
+        event.preventDefault();
+        const description = $(this).data("description");
+        $("section").empty().append($("<div>").html(description));
+      });
 
       const data = await response.json();
       return data.access_token;
