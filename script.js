@@ -75,6 +75,33 @@ $(document).ready(function () {
             .attr("href", item.external_urls.spotify)
             .text("Open Playlist");
           itemLi.append(itemName, itemLink);
+        } else if (searchType === "track") {
+          const artists = item.artists.map((artist) => artist.name).join(", ");
+          const albumName = item.album.name;
+          const trackContainer = $("<div>").addClass("track-container");
+          const playButton = $("<button>")
+            .text("Play")
+            .addClass("play-button")
+            .click(() => playTrack(item));
+          const trackInfo = $("<div>").addClass("track-info");
+          const artistName = $("<p>").text("Artist(s): " + artists);
+          const albumNameP = $("<p>").text("Album: " + albumName);
+          trackInfo.append(artistName, albumNameP);
+          itemLi.append(itemName, trackContainer);
+          trackContainer.append(playButton, trackInfo);
+        } else if (searchType === "album") {
+          const artists = item.artists.map((artist) => artist.name).join(", ");
+          const albumName = item.name;
+          const releaseDate = item.release_date;
+          const albumLink = $("<a>")
+            .attr("href", item.external_urls.spotify)
+            .text("Play Album");
+          const albumInfo = $("<div>").addClass("album-info");
+          const artistName = $("<p>").text("Artist(s): " + artists);
+          const albumNameP = $("<p>").text("Album: " + albumName);
+          const releaseDateP = $("<p>").text("Release Date: " + releaseDate);
+          albumInfo.append(artistName, albumNameP, releaseDateP, albumLink);
+          itemLi.append(itemName, albumInfo);
         }
         itemList.append(itemLi);
       });
