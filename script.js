@@ -102,6 +102,21 @@ $(document).ready(function () {
           const releaseDateP = $("<p>").text("Release Date: " + releaseDate);
           albumInfo.append(artistName, albumNameP, releaseDateP, albumLink);
           itemLi.append(itemName, albumInfo);
+        } else if (searchType === "audiobook") {
+          const authors = item.authors.map((author) => author.name).join(", ");
+          const descriptionLink = $("<a>")
+            .attr("href", "#")
+            .text("Description")
+            .addClass("description-link")
+            .data("description", item.description);
+          const audiobookInfo = $("<div>").addClass("audiobook-info");
+          const authorName = $("<p>").text("Author(s): " + authors);
+          const edition = $("<p>").text("Edition: " + item.edition);
+          const language = $("<p>").text(
+            "Language: " + item.languages.join(", ")
+          );
+          audiobookInfo.append(authorName, edition, language, descriptionLink);
+          itemLi.append(itemName, audiobookInfo);
         }
         itemList.append(itemLi);
       });
