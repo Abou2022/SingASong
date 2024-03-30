@@ -72,8 +72,33 @@ $(document).ready(function () {
           itemLi.append(itemName, itemGenres, itemPopularity, itemImage);
         } else if (searchType === "playlist") {
           const itemLink = $("<a>")
-            .attr("href", item.external_urls.spotify)
-            .text("Open Playlist");
+            .attr("href", "#")
+            .text("Play Playlist")
+            .click(() => {
+              const playlistId = getPlaylistIdFromExternalUrl(
+                item.external_urls.spotify
+              );
+              if (playlistId) {
+                const iframe = $("<iframe>")
+                  .attr("title", "Spotify Embed: Recommendation Playlist")
+                  .attr(
+                    "src",
+                    `https://open.spotify.com/embed/playlist/${playlistId}?utm_source=generator&theme=0`
+                  )
+                  .attr("width", "100%")
+                  .attr("height", "100%")
+                  .attr("style", "min-height: 360px;")
+                  .attr("frameborder", "0")
+                  .attr(
+                    "allow",
+                    "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  )
+                  .attr("loading", "lazy");
+                $(".youtube-play").empty().append(iframe);
+              } else {
+                console.error("Invalid playlist URL");
+              }
+            });
           itemLi.append(itemName, itemLink);
         } else if (searchType === "track") {
           const artists = item.artists.map((artist) => artist.name).join(", ");
