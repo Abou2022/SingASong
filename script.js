@@ -1,4 +1,3 @@
-// import config from "./config";
 import config from "./config.js";
 
 $(document).ready(function () {
@@ -186,5 +185,31 @@ $(document).ready(function () {
       console.error("Error retrieving access token:", error);
       return null;
     }
+  }
+
+  function getPlaylistIdFromExternalUrl(url) {
+    const parts = url.split("/");
+    const playlistId = parts[parts.length - 1];
+    return playlistId;
+  }
+
+  async function playTrack(item) {
+    const trackId = item.id;
+    const iframe = $("<iframe>")
+      .attr("title", "Spotify Embed: Recommendation Track")
+      .attr(
+        "src",
+        `https://open.spotify.com/embed/track/${trackId}?utm_source=generator&theme=0`
+      )
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .attr("style", "min-height: 360px;")
+      .attr("frameborder", "0")
+      .attr(
+        "allow",
+        "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      )
+      .attr("loading", "lazy");
+    $(".youtube-play").empty().append(iframe);
   }
 });
