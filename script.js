@@ -212,4 +212,38 @@ $(document).ready(function () {
       .attr("loading", "lazy");
     $(".youtube-play").empty().append(iframe);
   }
+
+  const youtubeApiKey = config.clientSecret;
+
+  function videoSearch(key, search, maxResults) {
+    $.get(
+      "https://www.googleapis.com/youtube/v3/search?key=" +
+        key +
+        "&type=video&part=snippet&maxResults" +
+        maxResults +
+        "&q=" +
+        search,
+      function (data) {
+        console.log(data);
+        data.items.forEach((item) => {
+          video = `<iframe width="420" height="315" src="https://www.youtube.com/embed/${item.id.videoId}" frameborder="0" allowfullscreen></iframe>`;
+
+          $("#videos").append(video);
+        });
+      }
+    );
+  }
+
+  $(".youtube-play").on("click", "h3", function (event) {
+    event.preventDefault();
+
+    $("#videos").empty();
+
+    console.log("form is submitted");
+
+    var search = $(this).text() + "recipe";
+    var maxResults = 2;
+
+    videoSearch(youtubeApiKey, search, maxResults);
+  });
 });
