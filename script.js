@@ -227,14 +227,14 @@ $(document).ready(function () {
 
   const youtubeApiKey = config.clientSecret;
 
-  function videoSearch(key, search, maxResults, item) {
-    const searchQuery = search;
+  function videoSearch(key, search, maxResults) {
+    const searchQuery = encodeURIComponent(search);
 
     console.log("Search Query:", search);
     $.get(
       "https://www.googleapis.com/youtube/v3/search",
       {
-        key: config.youtubeApiKey,
+        key: key,
         type: "video",
         part: "snippet",
         maxResults: maxResults,
@@ -245,7 +245,7 @@ $(document).ready(function () {
         data.items.forEach((videoItem) => {
           const videoId = videoItem.id.videoId;
           const video = `<iframe width="420" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
-          $("#videos").append(video);
+          $(".youtube-play").html(video); // Replace the content of the YouTube video container
         });
       }
     ).fail(function (xhr, status, error) {
