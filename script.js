@@ -113,10 +113,22 @@ $(document).ready(function () {
           const artists = item.artists.map((artist) => artist.name).join(", ");
           const albumName = item.name;
           const releaseDate = item.release_date;
-          const albumLink = $("<a>")
-            .attr("href", item.external_urls.spotify)
-            .text("Play Album");
-          itemLi.append(itemName, albumLink);
+          const albumInfo = $("<div>").addClass("album-info");
+          const artistName = $("<p>").text("Artist(s): " + artists);
+          const albumNameP = $("<p>").text("Album: " + albumName);
+          const releaseDateP = $("<p>").text("Release Date: " + releaseDate);
+
+          const albumEmbed = $("<iframe>")
+            .attr("src", `https://open.spotify.com/embed/album/${item.id}`)
+            .attr("width", "300")
+            .attr("height", "380")
+            .attr("frameborder", "0")
+            .attr("allowtransparency", "true")
+            .attr("allow", "encrypted-media");
+
+          albumInfo.append(artistName, albumNameP, releaseDateP);
+          albumInfo.append(albumEmbed);
+          itemLi.append(itemName, albumInfo);
         } else if (searchType === "audiobook") {
           const authors = item.authors.map((author) => author.name).join(", ");
           const descriptionLink = $("<a>")
