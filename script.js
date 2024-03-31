@@ -13,7 +13,6 @@ $(document).ready(function () {
       console.log("Please enter both search query and type.");
       return;
     }
-    videoSearch(config.youtubeApiKey, searchQuery, 1);
 
     const my_token = await get_spotify_api_token(clientId, clientSecret);
 
@@ -117,27 +116,7 @@ $(document).ready(function () {
           const albumLink = $("<a>")
             .attr("href", item.external_urls.spotify)
             .text("Play Album");
-
-          const videoLink = $("<a>")
-            .attr("href", "#")
-            .text("Youtube")
-            .click(function () {
-              const searchQuery = `${item.artists[0].name} ${item.name}`;
-              videoSearch(youtubeApiKey, searchQuery, 1, item);
-            });
-
-          const albumInfo = $("<div>").addClass("album-info");
-          const artistName = $("<p>").text("Artist(s): " + artists);
-          const albumNameP = $("<p>").text("Album: " + albumName);
-          const releaseDateP = $("<p>").text("Release Date: " + releaseDate);
-          albumInfo.append(
-            artistName,
-            albumNameP,
-            releaseDateP,
-            albumLink,
-            videoLink
-          );
-          itemLi.append(itemName, albumInfo);
+          itemLi.append(itemName, albumLink);
         } else if (searchType === "audiobook") {
           const authors = item.authors.map((author) => author.name).join(", ");
           const descriptionLink = $("<a>")
@@ -224,45 +203,4 @@ $(document).ready(function () {
       .attr("loading", "lazy");
     $(".youtube-play").empty().append(iframe);
   }
-
-  const youtubeApiKey = config.clientSecret;
-
-  function videoSearch(key, search, maxResults) {
-    const searchQuery = encodeURIComponent(search);
-
-    console.log("Search Query:", search);
-    $.get(
-      "https://www.googleapis.com/youtube/v3/search",
-      {
-        key: key,
-        type: "video",
-        part: "snippet",
-        maxResults: maxResults,
-        q: searchQuery,
-      },
-      function (data) {
-        console.log("YouTube API Response:", data);
-        data.items.forEach((videoItem) => {
-          const videoId = videoItem.id.videoId;
-          const video = `<iframe width="420" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
-          $(".youtube-play").html(video); // Replace the content of the YouTube video container
-        });
-      }
-    ).fail(function (xhr, status, error) {
-      console.error("YouTube API Request Failed:", error);
-    });
-  }
-
-  $(".youtube-play").on("click", "h3", function (event) {
-    event.preventDefault();
-
-    $("#videos").empty();
-
-    console.log("form is submitted");
-
-    var search = $(this).text() + "recipe";
-    var maxResults = 2;
-
-    videoSearch(youtubeApiKey, search, maxResults);
-  });
 });
