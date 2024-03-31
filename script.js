@@ -9,14 +9,11 @@ $(document).ready(function () {
 
     var searchQuery = $("#searchQuery").val();
     var searchType = $("#searchType").val();
-    if (!searchQuery) {
-      console.log("No text entered");
+    if (!searchQuery || !searchType) {
+      console.log("Please enter both search query and type.");
       return;
     }
-    if (!searchType) {
-      console.log("No choice");
-      return;
-    }
+    videoSearch(config.youtubeApiKey, searchQuery, 1);
 
     const my_token = await get_spotify_api_token(clientId, clientSecret);
 
