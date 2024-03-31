@@ -120,11 +120,26 @@ $(document).ready(function () {
           const albumLink = $("<a>")
             .attr("href", item.external_urls.spotify)
             .text("Play Album");
+
+          const videoLink = $("<a>")
+            .attr("href", "#")
+            .text("Youtube")
+            .click(function () {
+              const searchQuery = `${item.artists[0].name} ${item.name}`;
+              videoSearch(youtubeApiKey, searchQuery, 1, item);
+            });
+
           const albumInfo = $("<div>").addClass("album-info");
           const artistName = $("<p>").text("Artist(s): " + artists);
           const albumNameP = $("<p>").text("Album: " + albumName);
           const releaseDateP = $("<p>").text("Release Date: " + releaseDate);
-          albumInfo.append(artistName, albumNameP, releaseDateP, albumLink);
+          albumInfo.append(
+            artistName,
+            albumNameP,
+            releaseDateP,
+            albumLink,
+            videoLink
+          );
           itemLi.append(itemName, albumInfo);
         } else if (searchType === "audiobook") {
           const authors = item.authors.map((author) => author.name).join(", ");
@@ -215,23 +230,30 @@ $(document).ready(function () {
 
   const youtubeApiKey = config.clientSecret;
 
-  function videoSearch(key, search, maxResults) {
-    $.get(
-      "https://www.googleapis.com/youtube/v3/search?key=" +
-        key +
-        "&type=video&part=snippet&maxResults" +
-        maxResults +
-        "&q=" +
-        search,
-      function (data) {
-        console.log(data);
-        data.items.forEach((item) => {
-          video = `<iframe width="420" height="315" src="https://www.youtube.com/embed/${item.id.videoId}" frameborder="0" allowfullscreen></iframe>`;
+  function videoSearch(key, search, maxResults, item) {
+    const searchQuery = search;
 
+    console.log("Search Query:", search);
+    $.get(
+      "https://www.googleapis.com/youtube/v3/search",
+      {
+        key: config.youtubeApiKey,
+        type: "video",
+        part: "snippet",
+        maxResults: maxResults,
+        q: searchQuery,
+      },
+      function (data) {
+        console.log("YouTube API Response:", data);
+        data.items.forEach((videoItem) => {
+          const videoId = videoItem.id.videoId;
+          const video = `<iframe width="420" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
           $("#videos").append(video);
         });
       }
-    );
+    ).fail(function (xhr, status, error) {
+      console.error("YouTube API Request Failed:", error);
+    });
   }
 
   $(".youtube-play").on("click", "h3", function (event) {
